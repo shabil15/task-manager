@@ -1,15 +1,12 @@
-
-import './App.css'
-import NotionKanban from './NotionKanban'
+import "./App.css";
+import NotionKanban from "./NotionKanban";
 
 function App() {
-
-
   return (
     <>
-     <NotionKanban />
+      <NotionKanban />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
