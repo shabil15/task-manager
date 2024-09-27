@@ -87,9 +87,30 @@ const Column = ({ title, headingColor, column, cards, setCards }: IColumnProps) 
     setActive(false)
   }
 
-  const handleDragEnd =()=>{
+  const handleDragEnd =(e:DragEvent<HTMLDivElement>)=>{
     clearHighlights()
     setActive(false)
+    const cardId = e.dataTransfer.getData('cardId');
+    const indicators =getIndicators();
+    const {element } =getNearesIndicator(e,indicators)
+    const before = element.getAttribute('data-before')||'-1';
+    if(before !==cardId){
+      let copy =[...cards]
+      let cardToTransfer = copy.find(c=>c.id === cardId);
+      if(!cardToTransfer) return
+
+      cardToTransfer = {...cardToTransfer, column}
+      copy = copy.filter(c=>c.id!==cardId);
+      const moveToBack =  before ==="-1"
+      if(moveToBack){
+        copy.push(cardToTransfer)
+      }else{
+        const insertAtIndex = copy.findIndex(el=>el.id===before);
+        if(insertAtIndex === undefined) return;
+        copy.splice(insertAtIndex,0,cardToTransfer)
+      }
+      setCards(copy)
+    }
   }
 
   const highlightIndicator =(e:DragEvent<HTMLDivElement>)=>{
