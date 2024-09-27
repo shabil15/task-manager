@@ -1,4 +1,4 @@
-import {  Dispatch, DragEvent, FormEvent, ReactNode, useState } from "react"
+import {  Dispatch, DragEvent, FormEvent, useState } from "react"
 import {motion} from 'framer-motion'
 
 interface IColumnProps {
@@ -96,7 +96,9 @@ const Column = ({ title, headingColor, column, cards, setCards }: IColumnProps) 
     const indicators = getIndicators()
     clearHighlights()
     const el = getNearesIndicator(e,indicators)
-    el.element.style.opacity='1'
+    if (el.element instanceof HTMLElement) {
+      el.element.style.opacity = '1';
+    }
     // console.log(el);
     
     // el.element.setAttribute('style',"{opacity:'1'}")
@@ -105,7 +107,9 @@ const Column = ({ title, headingColor, column, cards, setCards }: IColumnProps) 
   const clearHighlights =()=>{
     const indicators = getIndicators()
     indicators.forEach(el=>{
-      el.style.opacity='0'
+      if (el instanceof HTMLElement) {
+        el.style.opacity = '0';
+      }
     }
     )
   }
@@ -170,7 +174,7 @@ const Card = ({ title, id, column, handleDragStart }: {
     <motion.div
     layout
     layoutId={id}
-      onDragStart={(e) => handleDragStart(e, { title, id, column })}
+      onDragStart={(e) => handleDragStart(e as unknown as DragEvent<HTMLDivElement>, { title, id, column })}
       draggable="true"
       className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grab">
       <p className="text-neutral-100">
